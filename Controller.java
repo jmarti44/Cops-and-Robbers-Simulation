@@ -2,11 +2,16 @@
 import java.awt.Graphics;
 import java.io.IOException;
 import java.awt.event.MouseListener;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.Timer;
+
+
+
 import javax.swing.SwingUtilities;
 
-class Controller implements MouseListener
+class Controller implements MouseListener,KeyListener
 {
     Model model;
     View view;
@@ -47,7 +52,7 @@ class Controller implements MouseListener
            {
                Car fill = (Car)model.getList().get(i);
                fill.fillUp();
-           }*/ 
+           }
     
             
             /** 
@@ -68,6 +73,49 @@ class Controller implements MouseListener
     public void mouseEntered(MouseEvent e) {    }
     public void mouseExited(MouseEvent e) {    }
     public void mouseClicked(MouseEvent e) {    }
+
+
+    public void keyPressed(KeyEvent e)
+    {
+    
+    }
+    public void keyTyped(KeyEvent e )
+    {
+        if(e.getKeyChar() =='h')
+        {
+            System.out.println("hello world");
+        }
+        else if(e.getKeyChar() =='n')
+        {
+            int escape = RobberCar.getEscape();
+            int captured = RobberCar.getCapture();
+
+            System.out.println(escape);
+            System.out.println("Robbers have escaped");
+            System.out.println(captured);
+            System.out.println("Robbers have been captured");
+        }
+        else if(e.getKeyChar() == 'r')
+        {
+            model.intialize();
+            view.repaint();
+        }
+        else if (e.getKeyChar() == 's')
+        {
+            new SpriteMover(this.model,this.view);
+        }
+    }
+   
+    public void keyReleased(KeyEvent e)
+    {
+       
+        SpriteMover newMover = new SpriteMover(this.model,this.view);
+        Thread myThread = new Thread(newMover);
+        myThread.start();
+    }
+   
+
+
 
     public static void main(String[] args) throws Exception {
         //  Use the following line to determine which directory your program
