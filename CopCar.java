@@ -49,11 +49,11 @@ public class CopCar extends Car
         else if (this.getx() <=0 || this.getx() > width)
         {
             newX = (-1) * newX;
-            newY =(-1) * newY;
+            newY = (-1) * newY;
         }
        
 
-        super.drive(40,newX * xRatio, newY * yRatio);
+        super.drive(2,newX * xRatio, newY * yRatio);
         setx((int)getx());
         sety((int)gety());
     
