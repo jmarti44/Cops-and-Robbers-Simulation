@@ -1,12 +1,14 @@
 import java.awt.Graphics;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 class Model
 {
 
     public ArrayList <Sprite> sprites = new ArrayList<Sprite>();
+    public Iterator<Sprite> iterator;
     CopCar copCar;
     RobberCar robberCar;
     Sprite sprite;
@@ -32,7 +34,15 @@ class Model
     }
 
     
-  
+  public void intialize()
+  {
+      sprites = new ArrayList<Sprite>();
+      Sprite newBank = new Bank();
+      sprites.add(newBank);
+      RobberCar.setEscape(0);
+      RobberCar.setCapture(0);
+
+   }
   public void newSprite(int x, int y)
   {
   
@@ -69,13 +79,13 @@ class Model
  
   public void update(Graphics g) 
   { 
+    synchronized(sprites)
+    {
       for (int i = 0; i<sprites.size();i++)
       {
         sprites.get(i).updateImage(g);
       }
-      
-    
-     
+    }   
   }
   public ArrayList getList()
   {
@@ -83,6 +93,8 @@ class Model
   }
   public void updateScene(int width, int height)
   {
+    synchronized(sprites)
+    {
     for (int i = 0; i< getList().size(); i++)
     {
         sprites.get(i).updateState(width, height);
@@ -95,18 +107,33 @@ class Model
         if (sprites.get(i)instanceof RobberCar && sprites.get(k) instanceof CopCar )
         {
           
-          System.out.println(sprites.get(i).overlaps(sprites.get(k)));
-           /**
+          
           if(sprites.get(i).overlaps(sprites.get(k)) == true)
            {
-              System.out.println("gotcha");
-           }*/
-
+              RobberCar captured =(RobberCar)sprites.get(i);
+              captured.captured();
+           }
 
         }
       }
     }
-  }
+        iterator = sprites.iterator();
+        //removing element 
+        int i = 0;
+        while(iterator.hasNext())
+        {
+            Sprite car =iterator.next();
+            if( car instanceof RobberCar)
+            {
+              if (((RobberCar)car).hasEscaped() == true)
+              {
+                iterator.remove();
+                System.out.println("I'm free");
+              }
+            }
+        }
+      }
+    }
+    }
 
 
-}
