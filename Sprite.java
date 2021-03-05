@@ -68,37 +68,53 @@ class Sprite
 	public boolean overlaps (Sprite s)
 	{
 	
+		
+		
+
+		
+		
+
 	
+		//two conditions exist in which the shapes don't overlap
+		//1.-> top edge of one above another
+		//2.--> left edge of any one rectangle to the left side of the other
+		//therefore the coordinates of interest are the following
+		/**
+		 top right coordinates and bottom left coordinates 
+		 according to java coordiante system 
 
-		int width_1 = this.getImage().getWidth(null);
-		int height_1 = this.getImage().getHeight(null);
+		top-left (x,4)----------------->top-right(x + width,y)
+		\													\
+		\													\
+		bottom-left(x,y+height)------->(bottom-right(x+width),y+height)	
+		*/
 
-		int width_2 = s.getImage().getWidth(null);
-		int height_2= s.getImage().getHeight(null);
+		//comparsion of cases-return other true other
 
-		System.out.println(width_1);
-		System.out.println(width_2);
-		//First condition -top left coordinate
-		if ((this.getX() == s.getX()) && (this.getY() == s.getY()))
-		{	
-			return true;
-		}
-		//second top right coordinate
-		if((this.getX()+ 60 == s.getX()+60)&&(this.getY() == s.getY()))
+
+		//coordinate adjustment
+		int sBottomLeftY = s.getY() + 60;
+		int sTopRightX = this.getY() + 60;
+		int thisTopRightX= this.getX() + 60;
+		int thisBottomLeftY = this.getY() + 60;
+
+		
+		// top edge condition
+		if (thisTopRightX < this.getX() || s.getX() > sTopRightX)
 		{
-			return true;
+		
+			return false;
 		}
-		//bottom right coordinate
-		if ((this.getX()+60 == s.getX() + 60) && (this.getY()+60 == s.getY() + 60))
+		//left edge condition
+		if (this.getY() > sBottomLeftY || thisBottomLeftY < s.getY())
 		{
-			return true;
+			
+			return false;
 		}
-		//bottom left coordinate
-		if((this.getX()== s.getX())&&(this.getY() + 60 == s.getY() + 60))
-		{
-			return true;
-		}
-		return false;
+
+
+		return true;
+	
 	}
 		
 
